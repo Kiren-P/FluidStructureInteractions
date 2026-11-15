@@ -1,0 +1,7 @@
+
+    Reynolds stress fit (excluding first point): tau_R = -0.6288 z + 14.576
+    Reynolds stress fit (excluding first two points): tau_R = -0.6535 z + 14.977
+    Reynolds stress fit (excluding first three points): tau_R = -0.6721 z + 15.285
+    Reynolds stress fit (excluding first four points): tau_R = -0.6675 z + 15.206
+
+    
