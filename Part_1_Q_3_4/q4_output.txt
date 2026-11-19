@@ -1,0 +1,33 @@
+
+--- Verification of the second-order transfer functions ---
+Stokes 2nd order (m = n):   max rel. error eta2 = 1.1e-15, u2 = 2.0e-06
+Sharma & Dean / Forristall: max rel. error K+ = 3.1e-15, K- = 2.8e-14
+LHS62 set-down, f = 0.080 Hz: 2K- = -0.14451 1/m, theory -0.14454 1/m (rel. diff. 2.0e-04)
+LHS62 set-down, f = 0.114 Hz: 2K- = -0.07002 1/m, theory -0.07004 1/m (rel. diff. 2.1e-04)
+LHS62 set-down, f = 0.200 Hz: 2K- = -0.02828 1/m, theory -0.02828 1/m (rel. diff. 6.2e-05)
+Deep-water limit: K+ = 0.03250 (expect 0.03250), K- = -0.00750 (expect -0.00750)
+
+--- Assumptions ---
+record D = 10800 s, df = 9.259e-05 Hz, dt = 0.1 s, f = 0.030-0.400 Hz, N = 3997 components, seed = 2026, random amplitudes = False, z = 0.0 m
+peak: k_p h = 1.23, L_p = 102.0 m, Ursell Hs L_p^2/h^3 = 7.8
+
+--- Variance and Hm0 ---
+target JONSWAP (0-1 Hz): m0 = 2.2551 m^2, Hm0 = 6.007 m
+discretised, 0.03-0.4 Hz: m0 = 2.2434 m^2, Hm0 = 5.991 m
+time series linear        : m0 = 2.2434 m^2, Hm0 = 5.991 m, mean = -0.0000 m
+time series + super-harm. : m0 = 2.3476 m^2, Hm0 = 6.129 m, mean = -0.0000 m
+time series + sub-harm.   : m0 = 2.3732 m^2, Hm0 = 6.162 m, mean = -0.0000 m
+u_rms linear: series 1.4538 m/s, spectrum sqrt(sum |Hu|^2 E df) = 1.4538 m/s
+
+--- Skewness / kurtosis (Gaussian: 0 / 3) ---
+eta linear        : skewness = +0.019, kurtosis = 2.991
+eta + super       : skewness = +0.591, kurtosis = 3.576
+eta + super + sub : skewness = +0.232, kurtosis = 3.126
+u linear          : skewness = +0.021, kurtosis = 2.993
+u + super         : skewness = +0.280, kurtosis = 3.152
+u + super + sub   : skewness = -0.385, kurtosis = 3.254
+
+--- Zero-crossing statistics ---
+linear        : N = 1525, H1/3 = 5.79 m, Hmax = 11.18 m, crest max = 5.69 m, trough max = 5.88 m, mean crest/mean trough = 1.000
++ super       : N = 1529, H1/3 = 5.91 m, Hmax = 11.76 m, crest max = 8.11 m, trough max = 4.45 m, mean crest/mean trough = 1.405
++ super + sub : N = 1516, H1/3 = 5.91 m, Hmax = 11.71 m, crest max = 6.78 m, trough max = 5.57 m, mean crest/mean trough = 1.343
