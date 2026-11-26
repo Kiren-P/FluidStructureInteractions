@@ -1,0 +1,37 @@
+Rebuilt record: Tp = 9.02 s (from kp*h = 1.19), N_components = 4968, Hm0(spectrum) = 5.994 m, 4 std(eta1) = 5.994 m
+Tm02 of the components = 1/0.139 Hz -> 7.19 s;  second order: kp*h = 1.19, G = 1.01
+
+=== Individual waves (zero up-crossings), seed 2026 ===
+                                      linear  + 2nd order   Rayleigh
+number of waves N                       1516         1515
+Tz [s]                                  7.12         7.12
+Hm0 = 4 std(eta) [m]                    5.99         6.10       5.99
+H1/3 [m]                                5.78         5.82       5.99
+H1/3 / Hm0                             0.964        0.970      1.000
+Hrms [m]                                4.10         4.13       4.24
+mean H [m]                              3.63         3.64       3.76
+highest crest [m]                       6.02         8.19       5.74
+deepest trough [m]                     -5.68        -3.92
+largest wave height Hmax [m]           10.75        11.78      11.47
+Hmax / Hs                               1.79         1.97       1.91
+skewness of eta                         0.02         0.54
+
+Fraction of waves with crest above ...
+   0.50 Hs = 3.00 m : linear 0.1319   +2nd 0.2132   Rayleigh 0.1353
+   0.75 Hs = 4.50 m : linear 0.0119   +2nd 0.0502   Rayleigh 0.0111
+   1.00 Hs = 5.99 m : linear 0.0007   +2nd 0.0092   Rayleigh 0.0003
+Fraction of waves with wave height above ...
+   1.00 Hs = 5.99 m : linear 0.1168   +2nd 0.1182   Rayleigh 0.1353
+   1.50 Hs = 8.99 m : linear 0.0079   +2nd 0.0106   Rayleigh 0.0111
+   2.00 Hs = 11.99 m : linear 0.0000   +2nd 0.0000   Rayleigh 0.0003
+
+=== Ensemble: 100 linear records (3 h each, 150028 waves pooled) ===
+   highest crest per record: mean 5.95 m, 5-95 % range 5.27-6.89 m (Rayleigh estimate 5.74 m)
+   largest H per record:     mean 11.18 m, 5-95 % range 9.83-12.88 m (Rayleigh estimate 11.47 m)
+   pooled H1/3/Hm0 = 0.967; pooled mean H/Hs = 0.612 (Rayleigh 0.627); Hrms/Hs = 0.687 (Rayleigh 0.707)
+   crest > 0.50 Hs: pooled 1.35e-01  Rayleigh 1.35e-01
+   crest > 0.75 Hs: pooled 1.11e-02  Rayleigh 1.11e-02
+   crest > 1.00 Hs: pooled 4.60e-04  Rayleigh 3.35e-04
+   H     > 1.00 Hs: pooled 1.16e-01  Rayleigh 1.35e-01
+   H     > 1.50 Hs: pooled 6.60e-03  Rayleigh 1.11e-02
+   H     > 2.00 Hs: pooled 1.53e-04  Rayleigh 3.35e-04
