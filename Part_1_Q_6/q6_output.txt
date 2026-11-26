@@ -1,0 +1,24 @@
+--- Question 6: linear statistics near the bed (z = -h) and near the surface (z = 0) ---
+h = 20 m, Hm0 = 6 m, Tp = 8.8 s, D = 3 h, N_comp = 4910, seed = 2026, rho = 1025 kg/m3
+check: Hm0 of eta series = 6.001 m (Q4a: 6.001 m)
+
+signal          rms series  rms spectrum    Tm02     nu    eps   skew   kurt  N cyc  mean pk    r1/3  R:r1/3   r1/10 R:r1/10     max R:E[max]    -min
+u_bed               0.6022        0.6023    8.62  0.149  0.304 +0.001  2.860   1244    0.762   1.197   1.206   1.508   1.533   2.333    2.366   2.329   [m/s]
+u_surface           1.4738        1.4739    5.42  0.481  0.758 +0.013  2.985   1969    1.754   2.964   2.951   3.749   3.752   6.324    5.959   5.831   [m/s]
+dudt_bed            0.4390        0.4390    8.21  0.164  0.337 +0.001  2.904   1306    0.553   0.875   0.879   1.101   1.118   1.777    1.730   1.596   [m/s2]
+dudt_surface        1.7086        1.7086    3.54  0.461  0.650 -0.003  3.040   3062    2.030   3.418   3.421   4.353   4.349   7.234    7.092   6.835   [m/s2]
+(R: = Rayleigh value from the rms of the series; E[max] = rms (sqrt(2 ln N) + 0.577/sqrt(2 ln N)))
+Tm02 of eta (spectral) = 7.01 s
+
+--- Horizontal pressure gradient at the bed, dp/dx = -rho du/dt ---
+rms          =    450.0 Pa/m = 0.0448 rho g
+significant  =    897.0 Pa/m = 0.0892 rho g
+1/10         =   1128.9 Pa/m = 0.1123 rho g
+maximum |dp/dx| in 3 h =   1821.3 Pa/m = 0.1811 rho g (Rayleigh expected max 1773.2 Pa/m)
+occurs at t = 958.9 s; there eta = -0.40 m, u_bed = -0.01 m/s
+
+--- Checks ---
+regular wave H = Hs, T = Tp: u_bed = pi H/(T sinh kh) = 1.365 m/s, u_surface = 2.540 m/s, dp/dx_bed = rho w^2 a/sinh kh = 999 Pa/m
+u_bed significant amplitude 2 u_rms = 1.204 m/s (= Soulsby 1997 significant bed velocity U_s = 2 sigma_u)
+u at the instantaneous surface by linear extrapolation u(0) + eta du/dz: max 12.02 m/s, mean highest 1/3 4.46 m/s (Wheeler stretching gives u(z = eta) = u(z = 0): max 6.32 m/s)
+u_rms(z): bed 0.602, mid-depth 0.742, surface 1.474 m/s
