@@ -4,9 +4,12 @@ Part I, Question 6: statistics of
       pressure gradient near the bed, from the time series;
   (b) the horizontal orbital velocity near the surface.
 
-Linear wave theory, using the same random-phase realisation as Question 4a
-(JONSWAP, Hm0 = 6 m, Tp = 8.8 s, gamma = 3.3, h = 20 m, 3 h record,
-f = 0.5 fp - 4.5 fp, bin centres, seed 2026). Every component is passed
+Linear wave theory. The wave field is NOT rebuilt here: the spectrum, the
+frequency grid, the amplitudes, random phases, wavenumbers and the time series
+eta(t) and u(z = 0, t) are imported from the Question 4a code
+(Part_1_Q_3_4/random_phase_timeseries.py), so Question 6 uses exactly the same
+realisation (JONSWAP, Hm0 = 6 m, Tp = 8.8 s, h = 20 m, 3 h, seed 2026).
+Only the extra quantities are computed here, by passing every component
 through the linear transfer function of the quantity (Lecture 5, slide 15):
 
   u(z, t)       = sum a_i w_i   cosh k_i(z+h)/sinh k_i h  cos(w_i t + phi_i)
@@ -28,74 +31,60 @@ expected maximum of N Rayleigh-distributed peaks.
 """
 
 import os
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
-# ----------------------------------------------------------------------------
-# Input (identical to Question 4a, random_phase_timeseries.py)
-# ----------------------------------------------------------------------------
-g = 9.81          # gravity [m/s^2]
-rho = 1025.0      # density of sea water [kg/m^3]
-h = 20.0          # water depth [m]
-Hs = 6.0          # significant wave height Hm0 [m]
-Tp = 8.8          # peak period [s]
-D = 3 * 3600      # record length [s]
-df = 1 / D        # frequency resolution [Hz]
-dt = 0.1          # time step [s]
-f_min = 0.5 / Tp  # [Hz]
-f_max = 4.5 / Tp  # [Hz]
-SEED = 2026
-
 out_dir = os.path.dirname(os.path.abspath(__file__))
 
+# ----------------------------------------------------------------------------
+# Wave field of Question 4a (imported, not recomputed)
+# Only the Q4a part of random_phase_timeseries.py runs on import; Q4b and the
+# Q3/Q4 figures sit under `if __name__ == "__main__":` in that file.
+# ----------------------------------------------------------------------------
+sys.path.insert(0, os.path.join(out_dir, "..", "Part_1_Q_3_4"))
+print("Importing the Question 4a time series ...")
+import random_phase_timeseries as q4
 
-def jonswap(Tp, Hs, f):
-    """JONSWAP spectrum written with Hs and Tp (same as Question 3)."""
-    gamma = 3.3
-    fp = 1.0 / Tp
-    E_pm = (5 / 16) * Hs**2 * fp**4 * f**-5 * np.exp(-1.25 * (fp / f)**4)
-    sigma = np.where(f <= fp, 0.07, 0.09)
-    A_gamma = 1 - 0.287 * np.log(gamma)
-    return A_gamma * E_pm * gamma**np.exp(-(f - fp)**2 / (2 * sigma**2 * fp**2))
+g, h, Hs, Tp = q4.g, q4.h, q4.Hs, q4.Tp       # 9.81 m/s2, 20 m, 6 m, 8.8 s
+D, df, dt = q4.D, q4.df, q4.dt                # 3 h, 1/D, 0.1 s
+f, E, a, phi = q4.f, q4.E, q4.a, q4.phi       # frequencies, JONSWAP, amplitudes, phases
+omega, k = q4.omega, q4.k                     # angular frequency, wavenumber (dispersion)
+t, eta = q4.t, q4.eta                         # time and surface elevation of Q4a
+us = q4.u                                     # u at z = 0 from Q4a = velocity near the surface
+SEED = 2026                                   # seed used in Q4a
+jonswap = q4.jonswap
 
-
-def wavenumber(omega):
-    """Dispersion relation w^2 = g k tanh(kh), fixed-point iteration (as Q4a)."""
-    k = omega**2 / g
-    for _ in range(100):
-        k = omega**2 / (g * np.tanh(k * h))
-    return k
-
+rho = 1025.0                                  # density of sea water [kg/m^3]
 
 # ----------------------------------------------------------------------------
-# Components (same realisation as Question 4a)
+# Extra linear transfer functions for Question 6 (amplitude per metre of eta)
 # ----------------------------------------------------------------------------
-f = np.arange(f_min, f_max, df) + df / 2
-E = jonswap(Tp, Hs, f)
-a = np.sqrt(2 * E * df)
-phi = np.random.default_rng(SEED).uniform(0, 2 * np.pi, f.size)
-omega = 2 * np.pi * f
-k = wavenumber(omega)
-
-# linear transfer functions (amplitude per metre of eta)
 H_ub = omega / np.sinh(k * h)                 # u at the bed,      z = -h
-H_us = omega / np.tanh(k * h)                 # u at the surface,  z = 0
+H_us = omega / np.tanh(k * h)                 # u at the surface,  z = 0 (as Q4a)
 H_ab = omega**2 / np.sinh(k * h)              # du/dt at the bed
 H_as = omega**2 / np.tanh(k * h)              # du/dt at the surface
 H_dudz = omega * k                            # du/dz at z = 0 (for the extrapolation check)
 
+
+def wavenumber(om):
+    """Same fixed-point iteration as Q4a, for single frequencies (checks below)."""
+    kk = om**2 / g
+    for _ in range(100):
+        kk = om**2 / (g * np.tanh(kk * h))
+    return kk
+
+
 # ----------------------------------------------------------------------------
-# Time series (direct sum, in blocks of time steps)
+# Extra time series, same components and phases as eta and u of Q4a
+# (direct sum in blocks of time steps, as in Q4a)
 # ----------------------------------------------------------------------------
-t = np.arange(0, D, dt)
-eta, ub, us, ab, a_s, dudz = (np.zeros_like(t) for _ in range(6))
+ub, ab, a_s, dudz = (np.zeros_like(t) for _ in range(4))
 chunk = 4000
 for s in range(0, t.size, chunk):
     th = 2 * np.pi * f[:, None] * t[None, s:s + chunk] + phi[:, None]
     c, sn = np.cos(th), np.sin(th)
-    eta[s:s + chunk] = a @ c
     ub[s:s + chunk] = (a * H_ub) @ c
-    us[s:s + chunk] = (a * H_us) @ c
     ab[s:s + chunk] = -(a * H_ab) @ sn        # d/dt cos(w t + phi) = -w sin(w t + phi)
     a_s[s:s + chunk] = -(a * H_as) @ sn
     dudz[s:s + chunk] = (a * H_dudz) @ c
